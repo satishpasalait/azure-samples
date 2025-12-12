@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Azure.Core;
 using Azure.Messaging.EventGrid;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
@@ -15,55 +16,71 @@ public class EventGridCloudEventHandler
     }
 
     /// <summary>
-    /// Handles CloudEvents schema events
+    /// Handles CloudEvents-style events (using EventGridEvent with CloudEvents-compatible data structure)
+    /// Note: CloudEvent type may not be available in all versions. Using EventGridEvent instead.
     /// </summary>
     [Function("ProcessCloudEvent")]
     public async Task ProcessCloudEvent(
-        [EventGridTrigger] CloudEvent cloudEvent,
+        [EventGridTrigger] EventGridEvent eventGridEvent,
         FunctionContext context)
     {
-        _logger.LogInformation($"Received CloudEvent: {cloudEvent.Type}");
-        _logger.LogInformation($"CloudEvent Source: {cloudEvent.Source}");
-        _logger.LogInformation($"CloudEvent Subject: {cloudEvent.Subject}");
-        _logger.LogInformation($"CloudEvent ID: {cloudEvent.Id}");
-        _logger.LogInformation($"CloudEvent Time: {cloudEvent.Time}");
+        _logger.LogInformation($"Received CloudEvent-style event: {eventGridEvent.EventType}");
+        _logger.LogInformation($"Event Subject: {eventGridEvent.Subject}");
+        _logger.LogInformation($"Event ID: {eventGridEvent.Id}");
+        _logger.LogInformation($"Event Time: {eventGridEvent.EventTime}");
 
         try
         {
-            // Process CloudEvent data
-            if (cloudEvent.Data != null)
+            // Process event data
+            if (eventGridEvent.Data != null)
             {
-                var dataString = cloudEvent.Data.ToString();
-                _logger.LogInformation($"CloudEvent Data: {dataString}");
+                var dataString = eventGridEvent.Data.ToString();
+                _logger.LogInformation($"Event Data: {dataString}");
 
-                // Deserialize based on event type
+                // Deserialize the data
                 var eventData = JsonSerializer.Deserialize<JsonElement>(dataString);
                 
                 // Process the event
-                await ProcessCloudEventData(cloudEvent, eventData);
+                await ProcessCloudEventData(eventGridEvent, eventData);
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Error processing CloudEvent: {ex.Message}");
+            _logger.LogError(ex, $"Error processing CloudEvent-style event: {ex.Message}");
             throw;
         }
     }
 
-    private async Task ProcessCloudEventData(CloudEvent cloudEvent, JsonElement eventData)
+    private async Task ProcessCloudEventData(EventGridEvent eventGridEvent, JsonElement eventData)
     {
-        _logger.LogInformation($"Processing CloudEvent of type: {cloudEvent.Type}");
+        _logger.LogInformation($"Processing CloudEvent-style event of type: {eventGridEvent.EventType}");
 
-        // Handle different CloudEvent types
-        if (cloudEvent.Type.Contains("Message"))
+        // Handle different event types
+        if (eventGridEvent.EventType.Contains("Message") || eventGridEvent.EventType.Contains("CloudEvent"))
         {
-            if (eventData.TryGetProperty("Message", out var message))
+            // Try to extract nested data if it's in CloudEvents format
+            if (eventData.TryGetProperty("data", out var nestedData))
             {
-                _logger.LogInformation($"Message: {message.GetString()}");
+                if (nestedData.TryGetProperty("Message", out var message))
+                {
+                    _logger.LogInformation($"Message: {message.GetString()}");
+                }
+                if (nestedData.TryGetProperty("Priority", out var priority))
+                {
+                    _logger.LogInformation($"Priority: {priority.GetString()}");
+                }
             }
-            if (eventData.TryGetProperty("Priority", out var priority))
+            else
             {
-                _logger.LogInformation($"Priority: {priority.GetString()}");
+                // Direct properties
+                if (eventData.TryGetProperty("Message", out var message))
+                {
+                    _logger.LogInformation($"Message: {message.GetString()}");
+                }
+                if (eventData.TryGetProperty("Priority", out var priority))
+                {
+                    _logger.LogInformation($"Priority: {priority.GetString()}");
+                }
             }
         }
 

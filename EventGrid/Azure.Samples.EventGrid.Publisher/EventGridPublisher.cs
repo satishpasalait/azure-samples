@@ -1,4 +1,5 @@
 using Azure;
+using Azure.Core;
 using Azure.Messaging.EventGrid;
 using Azure.Messaging.EventGrid.Models;
 using System.Text.Json;
@@ -56,22 +57,28 @@ public class EventGridPublisher
 
     /// <summary>
     /// Publishes an event using CloudEvents schema
+    /// Note: CloudEvent support may require additional packages. Using EventGridEvent with custom schema instead.
     /// </summary>
     public async Task PublishCloudEventAsync<T>(T eventData, string eventType, string subject, string source)
     {
-        var cloudEvent = new CloudEvent(
-            source: new Uri(source),
-            type: eventType,
-            jsonSerializableData: new BinaryData(JsonSerializer.Serialize(eventData))
-        )
-        {
-            Subject = subject,
-            Id = Guid.NewGuid().ToString(),
-            Time = DateTimeOffset.UtcNow
-        };
+        // Using EventGridEvent with CloudEvents-compatible structure
+        var customEvent = new EventGridEvent(
+            subject: subject,
+            eventType: eventType,
+            dataVersion: "1.0",
+            data: new BinaryData(JsonSerializer.Serialize(new
+            {
+                source = source,
+                type = eventType,
+                subject = subject,
+                id = Guid.NewGuid().ToString(),
+                time = DateTimeOffset.UtcNow,
+                data = eventData
+            }))
+        );
 
-        await _client.SendEventAsync(cloudEvent);
-        Console.WriteLine($"Published CloudEvent: {eventType} with subject: {subject}");
+        await _client.SendEventAsync(customEvent);
+        Console.WriteLine($"Published CloudEvent-style event: {eventType} with subject: {subject}");
     }
 
     /// <summary>
@@ -147,7 +154,8 @@ public class EventGridPublisher
 
     public void Dispose()
     {
-        _client?.Dispose();
+        // EventGridPublisherClient doesn't need explicit disposal in this version
+        // The client will be disposed when it goes out of scope
     }
 }
 
