@@ -1,0 +1,37 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "topicName": {
+      "value": "evtgrid-orders-dev-001"
+    },
+    "domainName": {
+      "value": ""
+    },
+    "enableInputSchemaValidation": {
+      "value": true
+    },
+    "maxDeliveryCount": {
+      "value": 30
+    },
+    "deadLetterStorageAccountName": {
+      "value": "stgeventgriddl001"
+    },
+    "deadLetterContainerName": {
+      "value": "deadletter"
+    },
+    "orderSubscriptionName": {
+      "value": "orders-subscription"
+    },
+    "userSubscriptionName": {
+      "value": "users-subscription"
+    },
+    "productSubscriptionName": {
+      "value": "products-subscription"
+    },
+    "cloudEventSubscriptionName": {
+      "value": "cloudevents-subscription"
+    }
+  }
+}
+

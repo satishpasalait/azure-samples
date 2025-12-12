@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.0.11222.15 d18.0
+VisualStudioVersion = 18.0.11222.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Functions", "Functions", "{CC8F5310-CB7F-4A3A-B0DE-D19AAD27E8BE}"
 EndProject
@@ -18,6 +18,18 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azure.Samples.ServiceBus.Producer", "ServiceBus\Azure.Samples.ServiceBus.Producer\Azure.Samples.ServiceBus.Producer.csproj", "{945385D4-521F-440E-B6A3-F7C6943EF1F0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azure.Samples.ServiceBus.Consumer", "ServiceBus\Azure.Samples.ServiceBus.Consumer\Azure.Samples.ServiceBus.Consumer.csproj", "{45EDDB83-77D9-417B-8C11-C199074C3355}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infra", "Infra", "{30258541-D0D8-F3FD-D559-E63D6BF074C2}"
+	ProjectSection(SolutionItems) = preProject
+		EventGrid\Infra\main.bicep = EventGrid\Infra\main.bicep
+		EventGrid\Infra\main.parameters.json = EventGrid\Infra\main.parameters.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EventGrid", "EventGrid", "{C92B6820-3C05-B49F-7E45-D983639FF20F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azure.Samples.EventGrid.Publisher", "EventGrid\Azure.Samples.EventGrid.Publisher\Azure.Samples.EventGrid.Publisher.csproj", "{497757A3-79DD-4C9C-9415-A12F14AAA0E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azure.Samples.EventGrid.Subscriber", "EventGrid\Azure.Samples.EventGrid.Subscriber\Azure.Samples.EventGrid.Subscriber.csproj", "{3492127F-C3C0-4F6A-9326-C7F42E12FD55}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,6 +77,30 @@ Global
 		{45EDDB83-77D9-417B-8C11-C199074C3355}.Release|x64.Build.0 = Release|Any CPU
 		{45EDDB83-77D9-417B-8C11-C199074C3355}.Release|x86.ActiveCfg = Release|Any CPU
 		{45EDDB83-77D9-417B-8C11-C199074C3355}.Release|x86.Build.0 = Release|Any CPU
+		{497757A3-79DD-4C9C-9415-A12F14AAA0E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{497757A3-79DD-4C9C-9415-A12F14AAA0E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{497757A3-79DD-4C9C-9415-A12F14AAA0E1}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{497757A3-79DD-4C9C-9415-A12F14AAA0E1}.Debug|x64.Build.0 = Debug|Any CPU
+		{497757A3-79DD-4C9C-9415-A12F14AAA0E1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{497757A3-79DD-4C9C-9415-A12F14AAA0E1}.Debug|x86.Build.0 = Debug|Any CPU
+		{497757A3-79DD-4C9C-9415-A12F14AAA0E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{497757A3-79DD-4C9C-9415-A12F14AAA0E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{497757A3-79DD-4C9C-9415-A12F14AAA0E1}.Release|x64.ActiveCfg = Release|Any CPU
+		{497757A3-79DD-4C9C-9415-A12F14AAA0E1}.Release|x64.Build.0 = Release|Any CPU
+		{497757A3-79DD-4C9C-9415-A12F14AAA0E1}.Release|x86.ActiveCfg = Release|Any CPU
+		{497757A3-79DD-4C9C-9415-A12F14AAA0E1}.Release|x86.Build.0 = Release|Any CPU
+		{3492127F-C3C0-4F6A-9326-C7F42E12FD55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3492127F-C3C0-4F6A-9326-C7F42E12FD55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3492127F-C3C0-4F6A-9326-C7F42E12FD55}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3492127F-C3C0-4F6A-9326-C7F42E12FD55}.Debug|x64.Build.0 = Debug|Any CPU
+		{3492127F-C3C0-4F6A-9326-C7F42E12FD55}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3492127F-C3C0-4F6A-9326-C7F42E12FD55}.Debug|x86.Build.0 = Debug|Any CPU
+		{3492127F-C3C0-4F6A-9326-C7F42E12FD55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3492127F-C3C0-4F6A-9326-C7F42E12FD55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3492127F-C3C0-4F6A-9326-C7F42E12FD55}.Release|x64.ActiveCfg = Release|Any CPU
+		{3492127F-C3C0-4F6A-9326-C7F42E12FD55}.Release|x64.Build.0 = Release|Any CPU
+		{3492127F-C3C0-4F6A-9326-C7F42E12FD55}.Release|x86.ActiveCfg = Release|Any CPU
+		{3492127F-C3C0-4F6A-9326-C7F42E12FD55}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,5 +110,8 @@ Global
 		{A1B2C3D4-E5F6-7890-ABCD-EF1234567890} = {CD818228-55E2-371B-8970-595487E8457D}
 		{945385D4-521F-440E-B6A3-F7C6943EF1F0} = {CD818228-55E2-371B-8970-595487E8457D}
 		{45EDDB83-77D9-417B-8C11-C199074C3355} = {CD818228-55E2-371B-8970-595487E8457D}
+		{30258541-D0D8-F3FD-D559-E63D6BF074C2} = {C92B6820-3C05-B49F-7E45-D983639FF20F}
+		{497757A3-79DD-4C9C-9415-A12F14AAA0E1} = {C92B6820-3C05-B49F-7E45-D983639FF20F}
+		{3492127F-C3C0-4F6A-9326-C7F42E12FD55} = {C92B6820-3C05-B49F-7E45-D983639FF20F}
 	EndGlobalSection
 EndGlobal
