@@ -284,3 +284,4 @@ output eventGridDomainEndpoint string = !empty(domainName) ? eventGridDomain.pro
 output eventGridDomainName string = !empty(domainName) ? eventGridDomain.name : ''
 output storageAccountName string = !empty(deadLetterStorageAccountName) ? storageAccount.name : ''
 
+

@@ -11,3 +11,4 @@ public class ProductEvent
     public DateTime Timestamp { get; set; }
 }
 
+
